@@ -63,7 +63,7 @@ namespace MissionEditor.Metro
             return data;
         }
 
-        public void DataTableToExcel(DataTable data, string sheetName, List<int> writeRows)
+        public void DataTableToExcel(DataTable data, string sheetName, HashSet<int> writeRows)
         {
             Fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
             if (FilePath.IndexOf(".xlsx", StringComparison.Ordinal) > 0 || FilePath.IndexOf(".xlsm", StringComparison.Ordinal) > 0) // 2007版本

@@ -33,7 +33,7 @@ namespace MissionEditor.Metro
             InitializeConfig();
         }
 
-        public void SaveExcel(List<int> writeRows)
+        public void SaveExcel(HashSet<int> writeRows)
         {
             ExcelHelper excelHelper = new ExcelHelper(MissionFilePath);
             excelHelper.DataTableToExcel(MissionDatatable, "sheet1", writeRows);
