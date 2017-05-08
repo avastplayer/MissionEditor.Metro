@@ -123,11 +123,9 @@ namespace MissionEditor.Metro
             }
 
             //按照坐标和尺寸裁切
-            Bitmap image = CutImage(Paloma.TargaImage.LoadTargaImage(imageFullPath), rect);
-
-            BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(image.GetHbitmap(),
-                IntPtr.Zero, Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+            var tga = new TgaLib.TgaImage(new BinaryReader(
+                new FileStream(imageFullPath, FileMode.Open, FileAccess.Read, FileShare.Read)));
+            BitmapSource bitmapSource = tga.GetBitmap();
             return bitmapSource;
         }
 

@@ -108,21 +108,21 @@
                     <TextBlock Margin="3" VerticalAlignment="Center"   Grid.Row="11" Grid.Column="2" Text="其他方式" />
 
                     <ComboBox Margin="3"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Height="24" Name="MissionTypeComboBox">
-                        <TextBlock Text="10:点击NPC" />
-                        <TextBlock Text="11:给予金钱" />
-                        <TextBlock Text="12:给予物品" />
-                        <TextBlock Text="13:给予宠物" />
-                        <TextBlock Text="17:答题" />
-                        <TextBlock Text="22:使用物品" />
-                        <TextBlock Text="32:练功区掉落物品" />
-                        <TextBlock Text="34:练功区战斗计场次" />
-                        <TextBlock Text="35:练功区战斗计数量" />
-                        <TextBlock Text="50:无条件" />
-                        <TextBlock Text="54:步数触发" />
-                        <TextBlock Text="56:区域触发\护送" />
-                        <TextBlock Text="40:NPC战斗" />
-                        <TextBlock Text="58:等级限制任务" />
-                        <TextBlock Text="59:特殊类型" />
+                        <ComboBoxItem Content="10:点击NPC" Tag="10"/>
+                        <ComboBoxItem Content="11:给予金钱" Tag="11"/>
+                        <ComboBoxItem Content="12:给予物品" Tag="12"/>
+                        <ComboBoxItem Content="13:给予宠物" Tag="13"/>
+                        <ComboBoxItem Content="17:答题" Tag="17"/>
+                        <ComboBoxItem Content="22:使用物品" Tag="22"/>
+                        <ComboBoxItem Content="32:练功区掉落物品" Tag="32"/>
+                        <ComboBoxItem Content="34:练功区战斗计场次" Tag="34"/>
+                        <ComboBoxItem Content="35:练功区战斗计数量" Tag="35"/>
+                        <ComboBoxItem Content="50:无条件" Tag="50"/>
+                        <ComboBoxItem Content="54:步数触发" Tag="54"/>
+                        <ComboBoxItem Content="56:区域触发\护送"  Tag="56"/>
+                        <ComboBoxItem Content="40:NPC战斗" Tag="40"/>
+                        <ComboBoxItem Content="58:等级限制任务" Tag="58"/>
+                        <ComboBoxItem Content="59:特殊类型" Tag="59"/>
                     </ComboBox>
                     <TextBox Margin="3"  Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Name="ActiveInfoNpcIDTextBox" />
                     <TextBox Margin="3"  Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Name="ActiveInfoMapIDTextBox" />
@@ -136,9 +136,9 @@
                     <TextBox Margin="3"  Grid.Row="6" Grid.Column="3" VerticalAlignment="Top" Name="ActiveInfoStepProbabilityTextBox" />
                     <TextBox Margin="3"  Grid.Row="7" Grid.Column="1" VerticalAlignment="Top" Name="ActiveInfoMaxStepTextBox" />
                     <ComboBox Margin="3"  Grid.Row="7" Grid.Column="3" VerticalAlignment="Top" Name="ActiveInfoTeamStateComboBox">
-                        <TextBlock Text="Yes" />
-                        <TextBlock Text="No" />
-                        <TextBlock Text="Both" />
+                        <ComboBoxItem Content="Yes" />
+                        <ComboBoxItem Content="No" />
+                        <ComboBoxItem Content="Both" />
                     </ComboBox>
                     <TextBox Margin="3"  Grid.Row="8" Grid.Column="1" VerticalAlignment="Top" Name="ActiveInfoTimeLimitTextBox" />
                     <TextBox Margin="3"  Grid.Row="9" Grid.Column="1" VerticalAlignment="Top" Name="ActiveInfoIsRestartTimerTextBox" />
@@ -223,8 +223,8 @@
                             <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="5" Grid.Column="2" Text="掉落物品数量" />
                             <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="6" Grid.Column="0" Text="怪物种类" />
                             <ComboBox Margin="3"  Grid.Row="0" Grid.Column="1" Name="BattleInfoBattleMapTypeComboBox">
-                                <TextBlock Text="明雷区" />
-                                <TextBlock Text="暗雷区" />
+                                <ComboBoxItem Content="明雷区" />
+                                <ComboBoxItem Content="暗雷区" />
                             </ComboBox>
                             <TextBox Margin="3"  Grid.Row="1" Grid.Column="1" Name="BattleInfoBattleZoneIDTextBox" />
                             <TextBox Margin="3"  Grid.Row="2" Grid.Column="1" Name="BattleInfoDropTextBox" />
@@ -253,12 +253,12 @@
                             <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="3" Grid.Column="0" Text="战斗难度等级" />
                             <TextBox Margin="3"  Grid.Row="0" Grid.Column="1" Name="AIInfoAIIDTextBox" />
                             <ComboBox Margin="3"  Grid.Row="1" Grid.Column="1" Name="AIInfoBattleResultComboBox">
-                                <TextBlock Text="要求胜利" />
-                                <TextBlock Text="均可" />
+                                <ComboBoxItem Content="要求胜利" />
+                                <ComboBoxItem Content="均可" />
                             </ComboBox>
                             <ComboBox Margin="3"  Grid.Row="2" Grid.Column="1" Name="AIInfoDeathPunishComboBox">
-                                <TextBlock Text="0：不接受" />
-                                <TextBlock Text="1：接受" />
+                                <ComboBoxItem Content="0：不接受" />
+                                <ComboBoxItem Content="1：接受" />
                             </ComboBox>
                             <TextBox Margin="3"  Grid.Row="3" Grid.Column="1" Name="AIInfoTeamSteateTextBox" />
                         </Grid>
@@ -327,10 +327,10 @@
                 <ListBox Margin="3"  Grid.Row="11" Grid.Column="1" Name="RewardItemShapeIDList" />
                 <ListBox Margin="3"  Grid.Row="12" Grid.Column="1" Name="RewardItemIsBindList" />
                 <ComboBox Margin="3"  Grid.Row="13" Grid.Column="1" Name="RewardMapJumpTypeComboBox">
-                    <TextBlock Text="无" />
-                    <TextBlock Text="传送" />
-                    <TextBlock Text="飞行" />
-                    <TextBlock Text="副本" />
+                    <ComboBoxItem Content="无" />
+                    <ComboBoxItem Content="传送" />
+                    <ComboBoxItem Content="飞行" />
+                    <ComboBoxItem Content="副本" />
                 </ComboBox>
                 <TextBox Margin="3"  Grid.Row="13" Grid.Column="3" Name="ProcessBarTimeTextBox" />
                 <TextBox Margin="3"  Grid.Row="14" Grid.Column="1" Name="RewardMapIDTextBox" />

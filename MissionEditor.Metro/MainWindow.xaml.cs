@@ -57,7 +57,7 @@ namespace MissionEditor.Metro
             BindingTextBoxValue(PetExpRewardTextBox, "[PetExpReward]");
             BindingTextBoxValue(ShengWangTextBox, "[ShengWang]");
             BindingTextBoxValue(SMoneyTextBox, "[SMoney]");
-            BindingTextBoxValue(RewardMapJumpTypeComboBox, "[RewardMapJumpType]");
+            //BindingComboBoxValue(RewardMapJumpTypeComboBox, "[RewardMapJumpType]");
 
             BindingTextBoxValue(RewardMapIDTextBox, "[RewardMapID]");
             //BindingTextBoxValue(RewardMapXPosTextBox, "[RewardMapXPos]");
@@ -70,7 +70,8 @@ namespace MissionEditor.Metro
             //TODO：RewardItemNumList
             //TODO：RewardItemShapeIDList
             //TODO：RewardItemIsBindList
-            //BindingTextBoxValue(MissionTypeTextBox, "[MissionType]");
+            MissionTypeComboBox.Text=AssetManager.MissionDatatable.Rows[SelectDataRow]["MissionType"].ToString();
+            
             BindingTextBoxValue(ActiveInfoNpcIDTextBox, "[ActiveInfoNpcID]");
             BindingTextBoxValue(ActiveInfoMapIDTextBox, "[ActiveInfoMapID]");
             BindingTextBoxValue(ActiveInfoLeftPosTextBox, "[ActiveInfoLeftPos]");
@@ -132,6 +133,26 @@ namespace MissionEditor.Metro
         private void BindingTextBoxValue(FrameworkElement textBox, string value)
         {
             textBox.SetBinding(TextBox.TextProperty, new Binding
+            {
+                Source = AssetManager.MissionDatatable.Rows[SelectDataRow],
+                Path = new PropertyPath(value),
+                Mode = BindingMode.TwoWay
+            });
+        }
+
+        private void BindingComboBoxValue(FrameworkElement comboBox, string value)
+        {
+            comboBox.SetBinding(ItemsControl.ItemsSourceProperty, new Binding
+            {
+                Source = AssetManager.MissionDatatable.Rows[SelectDataRow],
+                Path = new PropertyPath(value),
+                Mode = BindingMode.TwoWay
+            });
+        }
+
+        private void BindingListBoxValue(FrameworkElement ListBox, string value)
+        {
+            ListBox.SetBinding(ItemsControl.ItemsSourceProperty, new Binding
             {
                 Source = AssetManager.MissionDatatable.Rows[SelectDataRow],
                 Path = new PropertyPath(value),
