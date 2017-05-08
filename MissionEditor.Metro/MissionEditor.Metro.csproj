@@ -73,7 +73,7 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="TgaLib, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="TgaLib">
       <HintPath>..\packages\TgaLib.1.0.1\lib\net45\TgaLib.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
