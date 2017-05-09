@@ -22,9 +22,9 @@ namespace MissionEditor.Metro
     /// </summary>
     public partial class MainWindow
     {
-        public HashSet<int> WriteRows { get; set; } = new HashSet<int>();
         public int SelectDataRow { get; set; }
         public AssetManager AssetManager = new AssetManager();
+        public HashSet<int> WriteRows { get; set; } = new HashSet<int>();
 
         public MainWindow()
         {
@@ -43,11 +43,13 @@ namespace MissionEditor.Metro
         private void MissionDataGrid_click(object sender, MouseButtonEventArgs e)
         {
             SelectDataRow = GetSelectedRow();
+            WriteRows.Add(SelectDataRow);
 
             BindingTextBoxValue(MinLevelTextBox, "[MinLevel]");
             BindingTextBoxValue(MaxLevelTextBox, "[MaxLevel]");
             BindingTextBoxValue(TransMinLevelTextBox, "[TransMinLevel]");
             BindingTextBoxValue(TransMaxLevelTextBox, "[TransMaxLevel]");
+            
             //TODO: RequestMissionList
             //TODO: RequestRoleIDList
             //TODO: PostMissionList
@@ -144,25 +146,62 @@ namespace MissionEditor.Metro
                 Mode = BindingMode.TwoWay
             });
         }
+        private void MissionTypeComboBox_OnDropDownClosed(object sender, EventArgs e)
+        {
+            DataRow missionTypeDataRow = AssetManager.MissionDatatable.Rows[SelectDataRow];
+            missionTypeDataRow.BeginEdit();
+            missionTypeDataRow["MissionType"] = DataProcess.GetMissionType(MissionTypeComboBox.SelectedIndex);
+            missionTypeDataRow.EndEdit();
+        }
+
+        private void ActiveInfoTeamStateComboBox_OnDropDownClosed(object sender, EventArgs e)
+        {
+            DataRow activeInfoTeamStateDataRow = AssetManager.MissionDatatable.Rows[SelectDataRow];
+            activeInfoTeamStateDataRow.BeginEdit();
+            activeInfoTeamStateDataRow["ActiveInfoTeamState"] = DataProcess.GetActiveInfoTeamState(ActiveInfoTeamStateComboBox.SelectedIndex);
+            activeInfoTeamStateDataRow.EndEdit();
+        }
+
+        private void BattleInfoBattleMapTypeComboBox_OnDropDownClosed(object sender, EventArgs e)
+        {
+            DataRow battleInfoBattleMapTypeDataRow = AssetManager.MissionDatatable.Rows[SelectDataRow];
+            battleInfoBattleMapTypeDataRow.BeginEdit();
+            battleInfoBattleMapTypeDataRow["BattleInfoBattleMapType"] = DataProcess.GetBattleInfoBattleMapType(BattleInfoBattleMapTypeComboBox.SelectedIndex);
+            battleInfoBattleMapTypeDataRow.EndEdit();
+        }
+
+        private void AIInfoTeamSteateComboBox_OnDropDownClosed(object sender, EventArgs e)
+        {
+            DataRow aiInfoTeamSteateDataRow = AssetManager.MissionDatatable.Rows[SelectDataRow];
+            aiInfoTeamSteateDataRow.BeginEdit();
+            aiInfoTeamSteateDataRow["AIInfoTeamSteate"] = DataProcess.GetAIInfoTeamSteate(AIInfoTeamSteateComboBox.SelectedIndex);
+            aiInfoTeamSteateDataRow.EndEdit(); throw new NotImplementedException();
+        }
+
+        private void AIInfoDeathPunishComboBox_OnDropDownClosed(object sender, EventArgs e)
+        {
+            DataRow aiInfoDeathPunishDataRow = AssetManager.MissionDatatable.Rows[SelectDataRow];
+            aiInfoDeathPunishDataRow.BeginEdit();
+            aiInfoDeathPunishDataRow["AIInfoDeathPunish"] = DataProcess.GetAIInfoDeathPunish(AIInfoDeathPunishComboBox.SelectedIndex);
+            aiInfoDeathPunishDataRow.EndEdit();
+        }
+
+        private void RewardMapJumpTypeComboBox_OnDropDownClosed(object sender, EventArgs e)
+        {
+            DataRow rewardMapJumpTypeDataRow = AssetManager.MissionDatatable.Rows[SelectDataRow];
+            rewardMapJumpTypeDataRow.BeginEdit();
+            rewardMapJumpTypeDataRow["RewardMapJumpType"] = DataProcess.GetRewardMapJumpType(RewardMapJumpTypeComboBox.SelectedIndex);
+            rewardMapJumpTypeDataRow.EndEdit();
+        }
 
         private void SaveButton_click(object sender, MouseButtonEventArgs e)
         {
             AssetManager.SaveExcel(WriteRows);
         }
 
-        private void TextBox_TextInput(object sender, TextCompositionEventArgs textCompositionEventArgs)
+        private void SaveAllButton_click(object sender, MouseButtonEventArgs e)
         {
-            WriteRows.Add(SelectDataRow);
-        }
-
-        private void MissionDataGrid_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            WriteRows.Add(SelectDataRow);
-        }
-
-        private void ComboBox_OnSelectionChanged(object sender, RoutedEventArgs routedEventArgs)
-        {
-            WriteRows.Add(SelectDataRow);
+            AssetManager.SaveExcel(WriteRows);
         }
     }
 }

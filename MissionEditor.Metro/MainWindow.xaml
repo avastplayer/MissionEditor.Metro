@@ -12,6 +12,7 @@
     <DockPanel LastChildFill="True">
         <StatusBar DockPanel.Dock="Bottom" Height="35">
             <Button Content="保存" Height="25" VerticalAlignment="Top" Width="75" MouseUp="SaveButton_click" />
+            <Button Content="保存全部" Height="25" VerticalAlignment="Top" Width="75" MouseUp="SaveAllButton_click" />
         </StatusBar>
         <Grid DockPanel.Dock="Left" Width="350">
             <Grid.RowDefinitions>
@@ -25,7 +26,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBox Margin="3" Grid.Row="0"  Name="SearchTextBar" />
-                    <DataGrid  Grid.Row="1" Name="MissionDataGrid"  AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserSortColumns="False" SelectionMode="Single"  MouseUp="MissionDataGrid_click" CellEditEnding="MissionDataGrid_OnCellEditEnding">
+                    <DataGrid  Grid.Row="1" Name="MissionDataGrid"  AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserSortColumns="False" SelectionMode="Single"  MouseUp="MissionDataGrid_click" >
                         <DataGrid.Columns>
                             <DataGridTextColumn CanUserResize="False" Width="*" Binding="{Binding Path=MissionID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="任务ID" />
                             <DataGridTextColumn CanUserResize="False" Width="1.5*" Binding="{Binding Path=MissionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="任务名称" />
@@ -55,7 +56,7 @@
                     <TextBox  Grid.Row="0" Grid.Column="2" Margin="3"  Name="MaxLevelTextBox" />
                     <TextBox  Grid.Row="1" Grid.Column="1" Margin="3"  Name="TransMinLevelTextBox" />
                     <TextBox  Grid.Row="1" Grid.Column="2" Margin="3"  Name="TransMaxLevelTextBox" />
-                    <ListBox  Grid.Row="2" Grid.Column="1" Margin="3"  Grid.ColumnSpan="2" Name="RequestMissionListBox" />
+                    <ComboBox  Grid.Row="2" Grid.Column="1" Margin="3"  Grid.ColumnSpan="2" Name="RequestMissionListBox" IsEditable="True" />
                     <ListBox  Grid.Row="3" Grid.Column="1" Margin="3"  Grid.ColumnSpan="2" Name="RequestRoleIDListBox" />
                 </Grid>
             </GroupBox>
@@ -107,7 +108,7 @@
                     <TextBlock Margin="3" VerticalAlignment="Center"   Grid.Row="11" Grid.Column="0" Text="使用物品ID" />
                     <TextBlock Margin="3" VerticalAlignment="Center"   Grid.Row="11" Grid.Column="2" Text="其他方式" />
 
-                    <ComboBox Margin="3"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Height="24" Name="MissionTypeComboBox">
+                    <ComboBox Margin="3"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Height="24" Name="MissionTypeComboBox" DropDownClosed="MissionTypeComboBox_OnDropDownClosed">
                         <ComboBoxItem Content="10:点击NPC" />
                         <ComboBoxItem Content="11:给予金钱" />
                         <ComboBoxItem Content="12:给予物品" />
@@ -135,7 +136,7 @@
                     <TextBox Margin="3"  Grid.Row="6" Grid.Column="1" VerticalAlignment="Top" Name="ActiveInfoMiniStepTextBox" />
                     <TextBox Margin="3"  Grid.Row="6" Grid.Column="3" VerticalAlignment="Top" Name="ActiveInfoStepProbabilityTextBox" />
                     <TextBox Margin="3"  Grid.Row="7" Grid.Column="1" VerticalAlignment="Top" Name="ActiveInfoMaxStepTextBox" />
-                    <ComboBox Margin="3"  Grid.Row="7" Grid.Column="3" VerticalAlignment="Top" Name="ActiveInfoTeamStateComboBox" SelectionChanged="ComboBox_OnSelectionChanged">
+                    <ComboBox Margin="3"  Grid.Row="7" Grid.Column="3" VerticalAlignment="Top" Name="ActiveInfoTeamStateComboBox" DropDownClosed="ActiveInfoTeamStateComboBox_OnDropDownClosed">
                         <ComboBoxItem Content="Yes" />
                         <ComboBoxItem Content="No" />
                         <ComboBoxItem Content="Both" />
@@ -222,7 +223,7 @@
                             <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="5" Grid.Column="0" Text="掉落物品ID" />
                             <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="5" Grid.Column="2" Text="掉落物品数量" />
                             <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="6" Grid.Column="0" Text="怪物种类" />
-                            <ComboBox Margin="3"  Grid.Row="0" Grid.Column="1" Name="BattleInfoBattleMapTypeComboBox">
+                            <ComboBox Margin="3"  Grid.Row="0" Grid.Column="1" Name="BattleInfoBattleMapTypeComboBox" DropDownClosed="BattleInfoBattleMapTypeComboBox_OnDropDownClosed">
                                 <ComboBoxItem Content="明雷区" />
                                 <ComboBoxItem Content="暗雷区" />
                             </ComboBox>
@@ -252,13 +253,13 @@
                             <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="2" Grid.Column="0" Text="是否死亡惩罚" />
                             <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="3" Grid.Column="0" Text="战斗难度等级" />
                             <TextBox Margin="3"  Grid.Row="0" Grid.Column="1" Name="AIInfoAIIDTextBox" />
-                            <ComboBox Margin="3"  Grid.Row="1" Grid.Column="1" Name="AIInfoTeamSteateComboBox">
+                            <ComboBox Margin="3"  Grid.Row="1" Grid.Column="1" Name="AIInfoTeamSteateComboBox" DropDownClosed="AIInfoTeamSteateComboBox_OnDropDownClosed">
                                 <ComboBoxItem Content="要求胜利" />
                                 <ComboBoxItem Content="均可" />
                             </ComboBox>
-                            <ComboBox Margin="3"  Grid.Row="2" Grid.Column="1" Name="AIInfoDeathPunishComboBox">
-                                <ComboBoxItem Content="0：不接受" />
-                                <ComboBoxItem Content="1：接受" />
+                            <ComboBox Margin="3"  Grid.Row="2" Grid.Column="1" Name="AIInfoDeathPunishComboBox" DropDownClosed="AIInfoDeathPunishComboBox_OnDropDownClosed">
+                                <ComboBoxItem Content="0:不接受" />
+                                <ComboBoxItem Content="1:接受" />
                             </ComboBox>
                             <TextBox Margin="3"  Grid.Row="3" Grid.Column="1" Name="AIInfoBattleLevelTextBox" />
                         </Grid>
@@ -326,7 +327,7 @@
                 <ListBox Margin="3"  Grid.Row="10" Grid.Column="1" Name="RewardItemNumList" />
                 <ListBox Margin="3"  Grid.Row="11" Grid.Column="1" Name="RewardItemShapeIDList" />
                 <ListBox Margin="3"  Grid.Row="12" Grid.Column="1" Name="RewardItemIsBindList" />
-                <ComboBox Margin="3"  Grid.Row="13" Grid.Column="1" Name="RewardMapJumpTypeComboBox">
+                <ComboBox Margin="3"  Grid.Row="13" Grid.Column="1" Name="RewardMapJumpTypeComboBox" DropDownClosed="RewardMapJumpTypeComboBox_OnDropDownClosed">
                     <ComboBoxItem Content="无" />
                     <ComboBoxItem Content="传送" />
                     <ComboBoxItem Content="飞行" />
