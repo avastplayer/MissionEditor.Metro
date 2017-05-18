@@ -40,34 +40,43 @@ namespace MissionEditor.Metro
             //Head.Source = assetManager.GetImage(assetManager.HeadImageset + imagesetName, headId.ToString());
         }
 
-        private void MissionDataGrid_click(object sender, MouseButtonEventArgs e)
+        private void MissionDataGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectDataRow = GetSelectedRow();
             WriteRows.Add(SelectDataRow);
+            BindingValue();
+        }
 
+        private void BindingValue()
+        {
             BindingTextBoxValue(MinLevelTextBox, "[MinLevel]");
             BindingTextBoxValue(MaxLevelTextBox, "[MaxLevel]");
             BindingTextBoxValue(TransMinLevelTextBox, "[TransMinLevel]");
             BindingTextBoxValue(TransMaxLevelTextBox, "[TransMaxLevel]");
-            
-            //TODO: RequestMissionList
-            //TODO: RequestRoleIDList
-            //TODO: PostMissionList
-            BindingTextBoxValue(TransformIDTextBox, "[TransformID]");
+
+            BindingListBoxValue(RequestMissionListBox, "RequestMissionList");
+            BindingListBoxValue(RequestRoleIDListBox, "RequestRoleIDList");
+            BindingListBoxValue(PostMissionListBox, "PostMissionList");
+
             BindingTextBoxValue(NoteInfoTextBox, "[NoteInfo]");
             BindingTextBoxValue(ExpRewardTextBox, "[ExpReward]");
             BindingTextBoxValue(MoneyRewardTextBox, "[MoneyReward]");
             BindingTextBoxValue(PetExpRewardTextBox, "[PetExpReward]");
             BindingTextBoxValue(ShengWangTextBox, "[ShengWang]");
             BindingTextBoxValue(SMoneyTextBox, "[SMoney]");
+
             RewardMapJumpTypeComboBox.SelectedIndex = DataProcess.GetRewardMapJumpTypeSelectIndex(
                 Convert.ToInt32(AssetManager.MissionDatatable.Rows[SelectDataRow]["RewardMapJumpType"]));
+
             BindingTextBoxValue(RewardMapIDTextBox, "[RewardMapID]");
             BindingTextBoxValue(RewardMapXPosTextBox, "[RewardMapXPos]");
             BindingTextBoxValue(RewardMapYPosTextBox, "[RewardMapYPos]");
             BindingTextBoxValue(ProcessBarTimeTextBox, "[ProcessBarTime]");
             BindingTextBoxValue(ProcessBarTextTextBox, "[ProcessBarText]");
             BindingTextBoxValue(ProcessBarColorTextBox, "[ProcessBarColor]");
+
+            BindingListBoxValue(DisPlayNPCIDListBox, "DisPlayNPCID");
+
             //TODO：DisPlayNPCID
             //TODO：RewardItemIDList
             //TODO：RewardItemNumList
@@ -75,6 +84,7 @@ namespace MissionEditor.Metro
             //TODO：RewardItemIsBindList
             MissionTypeComboBox.SelectedIndex = DataProcess.GetMissionTypeSelectIndex(
                 Convert.ToInt32(AssetManager.MissionDatatable.Rows[SelectDataRow]["MissionType"]));
+
             BindingTextBoxValue(ActiveInfoNpcIDTextBox, "[ActiveInfoNpcID]");
             BindingTextBoxValue(ActiveInfoMapIDTextBox, "[ActiveInfoMapID]");
             BindingTextBoxValue(ActiveInfoLeftPosTextBox, "[ActiveInfoLeftPos]");
@@ -86,8 +96,10 @@ namespace MissionEditor.Metro
             BindingTextBoxValue(ActiveInfoMiniStepTextBox, "[ActiveInfoMiniStep]");
             BindingTextBoxValue(ActiveInfoStepProbabilityTextBox, "[ActiveInfoStepProbability]");
             BindingTextBoxValue(ActiveInfoMaxStepTextBox, "[ActiveInfoMaxStep]");
+
             ActiveInfoTeamStateComboBox.SelectedIndex = DataProcess.GetActiveInfoTeamStateSelectIndex(
                 Convert.ToInt32(AssetManager.MissionDatatable.Rows[SelectDataRow]["ActiveInfoTeamState"]));
+
             BindingTextBoxValue(ActiveInfoTimeLimitTextBox, "[ActiveInfoTimeLimit]");
             BindingTextBoxValue(ActiveInfoIsRestartTimerTextBox, "[ActiveInfoIsRestartTimer]");
             BindingTextBoxValue(ActiveInfoGiveBackMoneyTextBox, "[ActiveInfoGiveBackMoney]");
@@ -95,33 +107,50 @@ namespace MissionEditor.Metro
             BindingTextBoxValue(ActiveInfoUseItemIDTextBox, "[ActiveInfoUseItemID]");
             BindingTextBoxValue(ActiveInfoOtherTypeTextBox, "[ActiveInfoOtherType]");
             BindingTextBoxValue(QuestionInfoCorrectAnswerTextBox, "[QuestionInfoCorrectAnswer]");
-            //TODO：QuestionInfoWrongAnswerList
+
+            //QuestionInfoWrongAnswerList只绑定5个
+            BindingTextBoxValue(QuestionInfoWrongAnswerList0, "[QuestionInfoWrongAnswerList0]");
+            BindingTextBoxValue(QuestionInfoWrongAnswerList1, "[QuestionInfoWrongAnswerList1]");
+            BindingTextBoxValue(QuestionInfoWrongAnswerList2, "[QuestionInfoWrongAnswerList2]");
+            BindingTextBoxValue(QuestionInfoWrongAnswerList3, "[QuestionInfoWrongAnswerList3]");
+            BindingTextBoxValue(QuestionInfoWrongAnswerList4, "[QuestionInfoWrongAnswerList4]");
+
+
             BindingTextBoxValue(QuestionInfoNpcIDTextBox, "[QuestionInfoNpcID]");
             BindingTextBoxValue(QuestionInfoConversionTextBox, "[QuestionInfoConversion]");
             BindingTextBoxValue(TaskInfoDescriptionListATextBox, "[TaskInfoDescriptionListA]");
             BindingTextBoxValue(TaskInfoPurposeListATextBox, "[TaskInfoPurposeListA]");
             BindingTextBoxValue(TaskInfoTraceListATextBox, "[TaskInfoTraceListA]");
             BindingTextBoxValue(AIInfoAIIDTextBox, "[AIInfoAIID]");
-            //AIInfoBattleResult
+
+            //AIInfoBattleResult数据未绑定
+
             AIInfoDeathPunishComboBox.SelectedIndex = DataProcess.GetAIInfoDeathPunishSelectIndex(
                 Convert.ToInt32(AssetManager.MissionDatatable.Rows[SelectDataRow]["AIInfoDeathPunish"]));
             AIInfoTeamSteateComboBox.SelectedIndex = DataProcess.GetAIInfoTeamSteateSelectIndex(
                 Convert.ToInt32(AssetManager.MissionDatatable.Rows[SelectDataRow]["AIInfoTeamSteate"]));
+
             BindingTextBoxValue(AIInfoBattleLevelTextBox, "[AIInfoBattleLevel]");
+
             BattleInfoBattleMapTypeComboBox.SelectedIndex = DataProcess.GetBattleInfoBattleMapTypeSelectIndex(
                 Convert.ToInt32(AssetManager.MissionDatatable.Rows[SelectDataRow]["BattleInfoBattleMapType"]));
+
             BindingTextBoxValue(BattleInfoBattleZoneIDTextBox, "[BattleInfoBattleZoneID]");
             BindingTextBoxValue(BattleInfoDropTextBox, "[BattleInfoDrop]");
             BindingTextBoxValue(BattleInfoBattleTimesTextBox, "[BattleInfoBattleTimes]");
-            //TODO：BattleInfoMonsterList
+
+            BindingListBoxValue(BattleInfoMonsterListBox, "BattleInfoMonsterList");
+
             BindingTextBoxValue(BattleInfoMonsterNumTextBox, "[BattleInfoMonsterNum]");
             BindingTextBoxValue(BattleInfoDropItemIDTextBox, "[BattleInfoDropItemID]");
             BindingTextBoxValue(BattleInfoDropItemNumTextBox, "[BattleInfoDropItemNum]");
+
             //BindingTextBoxValue(ScenarioInfoAnimationIDTextBox, "[ScenarioInfoAnimationID]");
             //BindingTextBoxValue(ScenarioInfoBranchNpcIDTextBox, "[ScenarioInfoBranchNpcID]");
             //BindingTextBoxValue(ScenarioInfoBranchNoteTextBox, "[ScenarioInfoBranchNote]");
             //TODO：ScenarioInfoBranchOptionList
-            //TODO：ScenarioInfoNpcConversationList
+
+            BindingListBoxValue(ScenarioInfoNpcConversationListBox, "ScenarioInfoNpcConversationList");
             //TODO：ScenarioInfoNpcID
             //TODO：ScenarioInfoFinishConversationList
             //TODO：ScenarioInfoFinishNpcID
@@ -146,6 +175,18 @@ namespace MissionEditor.Metro
                 Mode = BindingMode.TwoWay
             });
         }
+
+        private void BindingListBoxValue(ItemsControl listBox,string field,int number=50)
+        {
+            listBox.Items.Clear();
+            for (int i = 0; i < number; i++)
+            {
+                if (AssetManager.MissionDatatable.Rows[SelectDataRow][field + i].ToString()=="") break;
+                listBox.Items.Add(AssetManager.MissionDatatable.
+                    Rows[SelectDataRow][field + i].ToString());
+            }
+        }
+
         private void MissionTypeComboBox_OnDropDownClosed(object sender, EventArgs e)
         {
             DataRow missionTypeDataRow = AssetManager.MissionDatatable.Rows[SelectDataRow];
@@ -175,7 +216,7 @@ namespace MissionEditor.Metro
             DataRow aiInfoTeamSteateDataRow = AssetManager.MissionDatatable.Rows[SelectDataRow];
             aiInfoTeamSteateDataRow.BeginEdit();
             aiInfoTeamSteateDataRow["AIInfoTeamSteate"] = DataProcess.GetAIInfoTeamSteate(AIInfoTeamSteateComboBox.SelectedIndex);
-            aiInfoTeamSteateDataRow.EndEdit(); throw new NotImplementedException();
+            aiInfoTeamSteateDataRow.EndEdit(); 
         }
 
         private void AIInfoDeathPunishComboBox_OnDropDownClosed(object sender, EventArgs e)
@@ -203,5 +244,7 @@ namespace MissionEditor.Metro
         {
             AssetManager.SaveExcel(WriteRows);
         }
+
+
     }
 }

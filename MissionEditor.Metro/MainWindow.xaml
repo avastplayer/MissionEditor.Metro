@@ -26,7 +26,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBox Margin="3" Grid.Row="0"  Name="SearchTextBar" />
-                    <DataGrid  Grid.Row="1" Name="MissionDataGrid"  AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserSortColumns="False" SelectionMode="Single"  MouseUp="MissionDataGrid_click" >
+                    <DataGrid  Grid.Row="1" Name="MissionDataGrid"  AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserSortColumns="False" SelectionMode="Single" SelectionChanged="MissionDataGrid_OnSelectionChanged" >
                         <DataGrid.Columns>
                             <DataGridTextColumn CanUserResize="False" Width="*" Binding="{Binding Path=MissionID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="任务ID" />
                             <DataGridTextColumn CanUserResize="False" Width="1.5*" Binding="{Binding Path=MissionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="任务名称" />
@@ -56,8 +56,9 @@
                     <TextBox  Grid.Row="0" Grid.Column="2" Margin="3"  Name="MaxLevelTextBox" />
                     <TextBox  Grid.Row="1" Grid.Column="1" Margin="3"  Name="TransMinLevelTextBox" />
                     <TextBox  Grid.Row="1" Grid.Column="2" Margin="3"  Name="TransMaxLevelTextBox" />
-                    <ComboBox  Grid.Row="2" Grid.Column="1" Margin="3"  Grid.ColumnSpan="2" Name="RequestMissionListBox" IsEditable="True" />
-                    <ListBox  Grid.Row="3" Grid.Column="1" Margin="3"  Grid.ColumnSpan="2" Name="RequestRoleIDListBox" />
+                    <ListBox  Grid.Row="2" Grid.Column="1" Margin="3"  Grid.ColumnSpan="2" Name="RequestMissionListBox" >
+                    </ListBox>
+                            <ListBox  Grid.Row="3" Grid.Column="1" Margin="3"  Grid.ColumnSpan="2" Name="RequestRoleIDListBox" />
                 </Grid>
             </GroupBox>
         </Grid>
@@ -190,7 +191,11 @@
                             <TextBlock Margin="3" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Text="错误选项" />
                             <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="6" Grid.Column="0" Text="对话NPC" />
                             <TextBox Margin="3" Grid.Row="0" Grid.Column="1" Name="QuestionInfoCorrectAnswerTextBox" />
-                            <ListBox Margin="3" Grid.Row="1" Grid.Column="1" Grid.RowSpan="5" Name="QuestionInfoWrongAnswerListBox" />
+                            <TextBox Margin="3" Grid.Row="1" Grid.Column="1" Name="QuestionInfoWrongAnswerList0"/>
+                            <TextBox Margin="3" Grid.Row="2" Grid.Column="1" Name="QuestionInfoWrongAnswerList1"/>
+                            <TextBox Margin="3" Grid.Row="3" Grid.Column="1" Name="QuestionInfoWrongAnswerList2"/>
+                            <TextBox Margin="3" Grid.Row="4" Grid.Column="1" Name="QuestionInfoWrongAnswerList3"/>
+                            <TextBox Margin="3" Grid.Row="5" Grid.Column="1" Name="QuestionInfoWrongAnswerList4"/>
                             <TextBox Margin="3" Grid.Row="6" Grid.Column="1" Name="QuestionInfoNpcIDTextBox" />
                             <Image Margin="3" Grid.Row="7" Grid.Column="0" Name="QuestionInfoNpcIDImage" />
                             <TextBox Margin="3" Grid.Row="7" Grid.Column="1" Name="QuestionInfoConversionTextBox" />
@@ -303,10 +308,6 @@
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="7" Grid.Column="0" Text="宠物经验" />
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="7" Grid.Column="2" Text="储备金奖励" />
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="8" Grid.Column="0" Text="历练声望" />
-                <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="9" Grid.Column="0" Text="奖励道具ID" />
-                <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="10" Grid.Column="0" Text="奖励道具Num" />
-                <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="11" Grid.Column="0" Text="造型" />
-                <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="12" Grid.Column="0" Text="绑定" />
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="13" Grid.Column="0" Text="跳转方式" />
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="13" Grid.Column="2" Text="进度条时间" />
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="14" Grid.Column="0" Text="地图" />
@@ -316,14 +317,21 @@
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="16" Grid.Column="0" Text="Y坐标" />
                 <ListBox Margin="3"  Grid.Row="0" Grid.Column="1" Name="PostMissionListBox" />
                 <TextBox Margin="3"  Grid.Row="1" Grid.Column="1" Name="TransformIDTextBox" />
-                <ListBox Margin="3"  Grid.Row="2" Grid.Column="1" Name="DisPlayNPCIDListBox" />
-                <TextBox Margin="3"  Grid.Row="3" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="3" TextWrapping="Wrap" Name="NoteInfoTextBox" />
+                <ListBox Margin="3"  Grid.Row="2" Grid.Column="1" Name="DisPlayNPCIDListBox"  MaxHeight="100"/>
+                <TextBox Margin="3"  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" TextWrapping="Wrap" Name="NoteInfoTextBox" />
                 <TextBox Margin="3"  Grid.Row="6" Grid.Column="1" Name="ExpRewardTextBox" />
                 <TextBox Margin="3"  Grid.Row="6" Grid.Column="3" Name="MoneyRewardTextBox" />
                 <TextBox Margin="3"  Grid.Row="7" Grid.Column="1" Name="PetExpRewardTextBox" />
                 <TextBox Margin="3"  Grid.Row="7" Grid.Column="3" Name="SMoneyTextBox" />
                 <TextBox Margin="3"  Grid.Row="8" Grid.Column="1" Name="ShengWangTextBox" />
-                <ListBox Margin="3"  Grid.Row="9" Grid.Column="1" Name="RewardItemIDList" />
+                <DataGrid  Grid.Row="9"  Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="4" MinHeight="100" Name="RewardItemDataGrid"  AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserSortColumns="False" SelectionMode="Single" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn CanUserResize="False" Width="1.5*" Binding="{Binding Path=RewardItemIDList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="奖励道具ID" />
+                        <DataGridTextColumn CanUserResize="False" Width="2*" Binding="{Binding Path=RewardItemNumList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="奖励道具Num" />
+                        <DataGridTextColumn CanUserResize="False" Width="*" Binding="{Binding Path=RewardItemShapeIDList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="造型" />
+                        <DataGridTextColumn CanUserResize="False" Width="*" Binding="{Binding Path=RewardItemIsBindList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="绑定" />
+                    </DataGrid.Columns>
+                </DataGrid>
                 <ListBox Margin="3"  Grid.Row="10" Grid.Column="1" Name="RewardItemNumList" />
                 <ListBox Margin="3"  Grid.Row="11" Grid.Column="1" Name="RewardItemShapeIDList" />
                 <ListBox Margin="3"  Grid.Row="12" Grid.Column="1" Name="RewardItemIsBindList" />
