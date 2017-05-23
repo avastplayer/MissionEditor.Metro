@@ -107,11 +107,11 @@ namespace MissionEditor.Metro
         {
             //获取全部image名字
             IEnumerable<string> imageNameList = GetFileNameList(ImageFolderPath);
-
+            //Todo:待优化
             //查找图片
             int findImageNumer = imageNameList.Count(element => element.Contains(imagesetName));
             if (findImageNumer == 0) return null;
-
+            
             //图片完整路径
             string imageFullPath = ImageFolderPath + imagesetName + ".tga";
 
@@ -124,10 +124,22 @@ namespace MissionEditor.Metro
             }
 
             //按照坐标和尺寸裁切
-            var tga = new TgaLib.TgaImage(new BinaryReader(
-                new FileStream(imageFullPath, FileMode.Open, FileAccess.Read, FileShare.Read)));
-            BitmapSource bitmapSource = tga.GetBitmap();
+            Bitmap image = CutImage(Paloma.TargaImage.LoadTargaImage(imageFullPath), rect); 
+            image = CutImage(image, rect);
+
+            BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(image.GetHbitmap(),
+                IntPtr.Zero, Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions());
             return bitmapSource;
+        }
+
+        private static Bitmap CutImage(Image img, Rectangle rect)
+        {
+            Bitmap b = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
+            Graphics g = Graphics.FromImage(b);
+            g.DrawImage(img, 0, 0, rect, GraphicsUnit.Pixel);
+            g.Dispose();
+            return b;
         }
 
         /// <summary>
@@ -135,9 +147,9 @@ namespace MissionEditor.Metro
         /// </summary>
         /// <param name="npcId"></param>
         /// <param name="npcName"></param>
-        /// <param name="headId"></param>
+        /// <param name="headBitmapSource"></param>
         /// <param name="mapName"></param>
-        public void GetNpcInfo(int npcId, out string npcName, out int headId, out string mapName)
+        public void GetNpcInfo(int npcId, out string npcName, out BitmapSource headBitmapSource, out string mapName)
         {
             string npcConfigPath = ConfigFolderPath + NpcConfigFileName;
 
@@ -155,13 +167,15 @@ namespace MissionEditor.Metro
                     int.TryParse(node.Attribute("mapid").Value, out int mapId))
                 {
                     npcName = node.Attribute("name").Value;
-                    headId = GetHeadId(shapeId);
+                    int headId = GetHeadId(shapeId);
+                    string imagesetName = HeadImageset + (headId - 9000) / 4;
+                    headBitmapSource = GetImage(imagesetName, headId.ToString());
                     mapName = GetMapName(mapId);
                     return;
                 }
             }
             npcName = null;
-            headId = 0;
+            headBitmapSource = null;
             mapName = null;
         }
 
@@ -197,16 +211,6 @@ namespace MissionEditor.Metro
             }
             return new Rectangle();
         }
-
-        private static Bitmap CutImage(Image img, Rectangle rect)
-        {
-            Bitmap b = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(b);
-            g.DrawImage(img, 0, 0, rect, GraphicsUnit.Pixel);
-            g.Dispose();
-            return b;
-        }
-
         /// <summary>
         ///查找knight.gsp.map.cmapconfig.xml中的mapName字段
         /// </summary>

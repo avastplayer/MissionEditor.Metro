@@ -149,8 +149,8 @@ namespace MissionEditor.Metro
             //BindingTextBoxValue(ScenarioInfoBranchNpcIDTextBox, "[ScenarioInfoBranchNpcID]");
             //BindingTextBoxValue(ScenarioInfoBranchNoteTextBox, "[ScenarioInfoBranchNote]");
             //TODO：ScenarioInfoBranchOptionList
-
-            BindingListBoxValue(ScenarioInfoNpcConversationListBox, "ScenarioInfoNpcConversationList");
+            SetConversationCell();
+            //BindingListBoxValue(ScenarioInfoNpcConversationListBox, "ScenarioInfoNpcConversationList");
             //TODO：ScenarioInfoNpcID
             //TODO：ScenarioInfoFinishConversationList
             //TODO：ScenarioInfoFinishNpcID
@@ -185,6 +185,23 @@ namespace MissionEditor.Metro
                 listBox.Items.Add(AssetManager.MissionDatatable.
                     Rows[SelectDataRow][field + i].ToString());
             }
+        }
+
+        private void SetConversationCell()
+        {
+            ScenarioInfoNpcConversationListBox.Items.Clear();
+            for (int i = 0; i < 50; i++)
+            {
+                if (int.TryParse(AssetManager.MissionDatatable.Rows[SelectDataRow]["ScenarioInfoNpcID" + i].ToString(),out int npcId))
+                {
+                    string conversation = AssetManager.MissionDatatable.Rows[SelectDataRow]["ScenarioInfoNpcConversationList" + i].ToString();
+                    AssetManager.GetNpcInfo(npcId, out string npcName, out BitmapSource headBitmapSource, out string mapName);
+                    ScenarioInfoNpcConversationListBox.Items.Add(new ConversationCell(npcName, headBitmapSource, conversation));
+                }
+                
+            }
+               
+                
         }
 
         private void MissionTypeComboBox_OnDropDownClosed(object sender, EventArgs e)

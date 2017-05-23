@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -73,8 +70,8 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="TgaLib">
-      <HintPath>..\packages\TgaLib.1.0.1\lib\net45\TgaLib.dll</HintPath>
+    <Reference Include="TargaImage">
+      <HintPath>.\TargaImage.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -85,6 +82,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="ConversationCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -94,6 +95,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AssetManager.cs" />
+    <Compile Include="ConversationCell.xaml.cs">
+      <DependentUpon>ConversationCell.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataProcess.cs" />
     <Compile Include="ExcelHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
