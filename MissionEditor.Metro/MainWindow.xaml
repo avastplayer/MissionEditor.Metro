@@ -26,7 +26,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBox Margin="3" Grid.Row="0"  Name="SearchTextBar" />
-                    <DataGrid  Grid.Row="1" Name="MissionDataGrid"  AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserSortColumns="False" SelectionMode="Single" SelectionChanged="MissionDataGrid_OnSelectionChanged" >
+                    <DataGrid  Grid.Row="1" Name="MissionDataGrid"  AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserSortColumns="False" SelectionMode="Single" SelectionChanged="MissionDataGrid_OnSelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn CanUserResize="False" Width="*" Binding="{Binding Path=MissionID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="任务ID" />
                             <DataGridTextColumn CanUserResize="False" Width="1.5*" Binding="{Binding Path=MissionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="任务名称" />
@@ -56,9 +56,9 @@
                     <TextBox  Grid.Row="0" Grid.Column="2" Margin="3"  Name="MaxLevelTextBox" />
                     <TextBox  Grid.Row="1" Grid.Column="1" Margin="3"  Name="TransMinLevelTextBox" />
                     <TextBox  Grid.Row="1" Grid.Column="2" Margin="3"  Name="TransMaxLevelTextBox" />
-                    <ListBox  Grid.Row="2" Grid.Column="1" Margin="3"  Grid.ColumnSpan="2" Name="RequestMissionListBox" >
+                    <ListBox  Grid.Row="2" Grid.Column="1" Margin="3"  Grid.ColumnSpan="2" Name="RequestMissionListBox">
                     </ListBox>
-                            <ListBox  Grid.Row="3" Grid.Column="1" Margin="3"  Grid.ColumnSpan="2" Name="RequestRoleIDListBox" />
+                    <ListBox  Grid.Row="3" Grid.Column="1" Margin="3"  Grid.ColumnSpan="2" Name="RequestRoleIDListBox" />
                 </Grid>
             </GroupBox>
         </Grid>
@@ -191,11 +191,11 @@
                             <TextBlock Margin="3" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Text="错误选项" />
                             <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="6" Grid.Column="0" Text="对话NPC" />
                             <TextBox Margin="3" Grid.Row="0" Grid.Column="1" Name="QuestionInfoCorrectAnswerTextBox" />
-                            <TextBox Margin="3" Grid.Row="1" Grid.Column="1" Name="QuestionInfoWrongAnswerList0"/>
-                            <TextBox Margin="3" Grid.Row="2" Grid.Column="1" Name="QuestionInfoWrongAnswerList1"/>
-                            <TextBox Margin="3" Grid.Row="3" Grid.Column="1" Name="QuestionInfoWrongAnswerList2"/>
-                            <TextBox Margin="3" Grid.Row="4" Grid.Column="1" Name="QuestionInfoWrongAnswerList3"/>
-                            <TextBox Margin="3" Grid.Row="5" Grid.Column="1" Name="QuestionInfoWrongAnswerList4"/>
+                            <TextBox Margin="3" Grid.Row="1" Grid.Column="1" Name="QuestionInfoWrongAnswerList0" />
+                            <TextBox Margin="3" Grid.Row="2" Grid.Column="1" Name="QuestionInfoWrongAnswerList1" />
+                            <TextBox Margin="3" Grid.Row="3" Grid.Column="1" Name="QuestionInfoWrongAnswerList2" />
+                            <TextBox Margin="3" Grid.Row="4" Grid.Column="1" Name="QuestionInfoWrongAnswerList3" />
+                            <TextBox Margin="3" Grid.Row="5" Grid.Column="1" Name="QuestionInfoWrongAnswerList4" />
                             <TextBox Margin="3" Grid.Row="6" Grid.Column="1" Name="QuestionInfoNpcIDTextBox" />
                             <Image Margin="3" Grid.Row="7" Grid.Column="0" Name="QuestionInfoNpcIDImage" />
                             <TextBox Margin="3" Grid.Row="7" Grid.Column="1" Name="QuestionInfoConversionTextBox" />
@@ -317,14 +317,14 @@
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="16" Grid.Column="0" Text="Y坐标" />
                 <ListBox Margin="3"  Grid.Row="0" Grid.Column="1" Name="PostMissionListBox" />
                 <TextBox Margin="3"  Grid.Row="1" Grid.Column="1" Name="TransformIDTextBox" />
-                <ListBox Margin="3"  Grid.Row="2" Grid.Column="1" Name="DisPlayNPCIDListBox"  MaxHeight="100"/>
+                <ListBox Margin="3"  Grid.Row="2" Grid.Column="1" Name="DisPlayNPCIDListBox"  MaxHeight="100" />
                 <TextBox Margin="3"  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" TextWrapping="Wrap" Name="NoteInfoTextBox" />
                 <TextBox Margin="3"  Grid.Row="6" Grid.Column="1" Name="ExpRewardTextBox" />
                 <TextBox Margin="3"  Grid.Row="6" Grid.Column="3" Name="MoneyRewardTextBox" />
                 <TextBox Margin="3"  Grid.Row="7" Grid.Column="1" Name="PetExpRewardTextBox" />
                 <TextBox Margin="3"  Grid.Row="7" Grid.Column="3" Name="SMoneyTextBox" />
                 <TextBox Margin="3"  Grid.Row="8" Grid.Column="1" Name="ShengWangTextBox" />
-                <DataGrid  Grid.Row="9"  Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="4" MinHeight="100" Name="RewardItemDataGrid"  AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserSortColumns="False" SelectionMode="Single" >
+                <DataGrid  Grid.Row="9"  Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="4" MinHeight="100" Name="RewardItemDataGrid"  AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserSortColumns="False" SelectionMode="Single">
                     <DataGrid.Columns>
                         <DataGridTextColumn CanUserResize="False" Width="1.5*" Binding="{Binding Path=RewardItemIDList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="奖励道具ID" />
                         <DataGridTextColumn CanUserResize="False" Width="2*" Binding="{Binding Path=RewardItemNumList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="奖励道具Num" />
@@ -353,11 +353,13 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <ListBox Grid.Row="0" Name="ScenarioInfoNpcConversationListBox">
                 </ListBox>
-                <ListBox Grid.Row="1" Name="ScenarioInfoFinishConversationListBox">
+                <GridSplitter Grid.Row="1" Height="3" HorizontalAlignment="Stretch" ShowsPreview="True"/>
+                    <ListBox Grid.Row="2" Name="ScenarioInfoFinishConversationListBox">
                 </ListBox>
             </Grid>
         </GroupBox>

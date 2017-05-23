@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MissionEditor.Metro
 {
@@ -31,13 +23,6 @@ namespace MissionEditor.Metro
             InitializeComponent();
 
             MissionDataGrid.ItemsSource = AssetManager.MissionDatatable.DefaultView;
-
-            //assetManager.GetNpcInfo(14039, out string npcName, out int headId, out string mapName);
-            //Console.WriteLine(npcName);
-            //Console.WriteLine(mapName);
-
-            //int imagesetName = (headId - 9000) / 4;
-            //Head.Source = assetManager.GetImage(assetManager.HeadImageset + imagesetName, headId.ToString());
         }
 
         private void MissionDataGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -115,7 +100,6 @@ namespace MissionEditor.Metro
             BindingTextBoxValue(QuestionInfoWrongAnswerList3, "[QuestionInfoWrongAnswerList3]");
             BindingTextBoxValue(QuestionInfoWrongAnswerList4, "[QuestionInfoWrongAnswerList4]");
 
-
             BindingTextBoxValue(QuestionInfoNpcIDTextBox, "[QuestionInfoNpcID]");
             BindingTextBoxValue(QuestionInfoConversionTextBox, "[QuestionInfoConversion]");
             BindingTextBoxValue(TaskInfoDescriptionListATextBox, "[TaskInfoDescriptionListA]");
@@ -150,10 +134,7 @@ namespace MissionEditor.Metro
             //BindingTextBoxValue(ScenarioInfoBranchNoteTextBox, "[ScenarioInfoBranchNote]");
             //TODO：ScenarioInfoBranchOptionList
             SetConversationCell();
-            //BindingListBoxValue(ScenarioInfoNpcConversationListBox, "ScenarioInfoNpcConversationList");
-            //TODO：ScenarioInfoNpcID
-            //TODO：ScenarioInfoFinishConversationList
-            //TODO：ScenarioInfoFinishNpcID
+            SetFinishConversationCell();
         }
 
         private int GetSelectedRow()
@@ -176,12 +157,12 @@ namespace MissionEditor.Metro
             });
         }
 
-        private void BindingListBoxValue(ItemsControl listBox,string field,int number=50)
+        private void BindingListBoxValue(ItemsControl listBox, string field, int number = 50)
         {
             listBox.Items.Clear();
             for (int i = 0; i < number; i++)
             {
-                if (AssetManager.MissionDatatable.Rows[SelectDataRow][field + i].ToString()=="") break;
+                if (AssetManager.MissionDatatable.Rows[SelectDataRow][field + i].ToString() == "") break;
                 listBox.Items.Add(AssetManager.MissionDatatable.
                     Rows[SelectDataRow][field + i].ToString());
             }
@@ -192,16 +173,27 @@ namespace MissionEditor.Metro
             ScenarioInfoNpcConversationListBox.Items.Clear();
             for (int i = 0; i < 50; i++)
             {
-                if (int.TryParse(AssetManager.MissionDatatable.Rows[SelectDataRow]["ScenarioInfoNpcID" + i].ToString(),out int npcId))
+                if (int.TryParse(AssetManager.MissionDatatable.Rows[SelectDataRow]["ScenarioInfoNpcID" + i].ToString(), out int npcId))
                 {
                     string conversation = AssetManager.MissionDatatable.Rows[SelectDataRow]["ScenarioInfoNpcConversationList" + i].ToString();
-                    AssetManager.GetNpcInfo(npcId, out string npcName, out BitmapSource headBitmapSource, out string mapName);
-                    ScenarioInfoNpcConversationListBox.Items.Add(new ConversationCell(npcName, headBitmapSource, conversation));
+                    AssetManager.GetNpcInfo(npcId, out string npcName, out BitmapSource headBitmapSource);
+                    ScenarioInfoNpcConversationListBox.Items.Add(new ConversationCell(npcName, headBitmapSource, conversation, ScenarioInfoNpcConversationListBox.ActualWidth - 2));
                 }
-                
             }
-               
-                
+        }
+
+        private void SetFinishConversationCell()
+        {
+            ScenarioInfoFinishConversationListBox.Items.Clear();
+            for (int i = 0; i < 50; i++)
+            {
+                if (int.TryParse(AssetManager.MissionDatatable.Rows[SelectDataRow]["ScenarioInfoFinishNpcID" + i].ToString(), out int npcId))
+                {
+                    string conversation = AssetManager.MissionDatatable.Rows[SelectDataRow]["ScenarioInfoFinishConversationList" + i].ToString();
+                    AssetManager.GetNpcInfo(npcId, out string npcName, out BitmapSource headBitmapSource);
+                    ScenarioInfoFinishConversationListBox.Items.Add(new ConversationCell(npcName, headBitmapSource, conversation, ScenarioInfoFinishConversationListBox.ActualWidth));
+                }
+            }
         }
 
         private void MissionTypeComboBox_OnDropDownClosed(object sender, EventArgs e)
@@ -233,7 +225,7 @@ namespace MissionEditor.Metro
             DataRow aiInfoTeamSteateDataRow = AssetManager.MissionDatatable.Rows[SelectDataRow];
             aiInfoTeamSteateDataRow.BeginEdit();
             aiInfoTeamSteateDataRow["AIInfoTeamSteate"] = DataProcess.GetAIInfoTeamSteate(AIInfoTeamSteateComboBox.SelectedIndex);
-            aiInfoTeamSteateDataRow.EndEdit(); 
+            aiInfoTeamSteateDataRow.EndEdit();
         }
 
         private void AIInfoDeathPunishComboBox_OnDropDownClosed(object sender, EventArgs e)
@@ -261,7 +253,5 @@ namespace MissionEditor.Metro
         {
             AssetManager.SaveExcel(WriteRows);
         }
-
-
     }
 }

@@ -27,7 +27,6 @@ namespace MissionEditor.Metro
 
         public string MissionFilePath { get; set; } = @"D:\ProjectResource\z主线任务.xlsx";
         public static DataTable MissionDatatable { get; private set; }
-        
 
         public AssetManager()
         {
@@ -111,7 +110,7 @@ namespace MissionEditor.Metro
             //查找图片
             int findImageNumer = imageNameList.Count(element => element.Contains(imagesetName));
             if (findImageNumer == 0) return null;
-            
+
             //图片完整路径
             string imageFullPath = ImageFolderPath + imagesetName + ".tga";
 
@@ -124,12 +123,10 @@ namespace MissionEditor.Metro
             }
 
             //按照坐标和尺寸裁切
-            Bitmap image = CutImage(Paloma.TargaImage.LoadTargaImage(imageFullPath), rect); 
-            image = CutImage(image, rect);
+            Bitmap image = CutImage(Paloma.TargaImage.LoadTargaImage(imageFullPath), rect);
 
             BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(image.GetHbitmap(),
-                IntPtr.Zero, Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+                IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             return bitmapSource;
         }
 
@@ -149,6 +146,41 @@ namespace MissionEditor.Metro
         /// <param name="npcName"></param>
         /// <param name="headBitmapSource"></param>
         /// <param name="mapName"></param>
+        public void GetNpcInfo(int npcId, out string npcName, out BitmapSource headBitmapSource)
+        {
+            //主角特殊处理
+            if (npcId == 1)
+            {
+                npcName = "主角";
+                headBitmapSource = GetImage(HeadImageset + 0, "9000");
+                return;
+            }
+
+            string npcConfigPath = ConfigFolderPath + NpcConfigFileName;
+
+            XElement rootNode = XElement.Load(npcConfigPath);
+
+            IEnumerable<XElement> targetNodes = from target in rootNode.Descendants("record")
+                                                select target;
+            foreach (XElement node in targetNodes)
+            {
+                if (node.Attribute("id").Value != npcId.ToString()) continue;
+
+                if (node.Attribute("name") == null || node.Attribute("modelID") == null) continue;
+
+                if (int.TryParse(node.Attribute("modelID").Value, out int shapeId))
+                {
+                    npcName = node.Attribute("name").Value;
+                    int headId = GetHeadId(shapeId);
+                    string imagesetName = HeadImageset + (headId - 9000) / 4;
+                    headBitmapSource = GetImage(imagesetName, headId.ToString());
+                    return;
+                }
+            }
+            npcName = null;
+            headBitmapSource = null;
+        }
+
         public void GetNpcInfo(int npcId, out string npcName, out BitmapSource headBitmapSource, out string mapName)
         {
             string npcConfigPath = ConfigFolderPath + NpcConfigFileName;
@@ -211,6 +243,7 @@ namespace MissionEditor.Metro
             }
             return new Rectangle();
         }
+
         /// <summary>
         ///查找knight.gsp.map.cmapconfig.xml中的mapName字段
         /// </summary>
