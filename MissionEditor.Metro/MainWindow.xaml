@@ -17,7 +17,7 @@
         <Grid DockPanel.Dock="Left" Width="350">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="200" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <GroupBox Grid.Row="0" Header="任务列表">
                 <Grid>
@@ -89,7 +89,6 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" />
                     <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="0" Grid.Column="0" Text="触发类型" />
                     <TextBlock Margin="3" VerticalAlignment="Center"   Grid.Row="1" Grid.Column="0" Text="NpcID" />
                     <TextBlock Margin="3" VerticalAlignment="Center"   Grid.Row="2" Grid.Column="0" Text="场景" />
@@ -325,7 +324,7 @@
                 <TextBox Margin="3"  Grid.Row="7" Grid.Column="1" Name="PetExpRewardTextBox" />
                 <TextBox Margin="3"  Grid.Row="7" Grid.Column="3" Name="SMoneyTextBox" />
                 <TextBox Margin="3"  Grid.Row="8" Grid.Column="1" Name="ShengWangTextBox" />
-                
+
                 <ListBox  Grid.Row="10"  Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="4" MinHeight="100" Name="RewardItemListbox">
                 </ListBox>
                 <ComboBox Margin="3"  Grid.Row="13" Grid.Column="1" Name="RewardMapJumpTypeComboBox" DropDownClosed="RewardMapJumpTypeComboBox_OnDropDownClosed">
@@ -351,9 +350,10 @@
                 </Grid.RowDefinitions>
                 <ListBox Grid.Row="0" Name="ScenarioInfoNpcConversationListBox">
                 </ListBox>
-                <GridSplitter Grid.Row="1" Height="3" HorizontalAlignment="Stretch" ShowsPreview="True"/>
-                    <ListBox Grid.Row="2" Name="ScenarioInfoFinishConversationListBox">
-                </ListBox>
+                <GroupBox Grid.Row="2">
+                    <ListBox Name="ScenarioInfoFinishConversationListBox">
+                    </ListBox>
+                </GroupBox>
             </Grid>
         </GroupBox>
     </DockPanel>

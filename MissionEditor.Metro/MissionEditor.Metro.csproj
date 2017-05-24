@@ -73,6 +73,9 @@
     <Reference Include="TargaImage">
       <HintPath>.\TargaImage.dll</HintPath>
     </Reference>
+    <Reference Include="TgaLib, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TgaLib.1.0.1\lib\net45\TgaLib.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

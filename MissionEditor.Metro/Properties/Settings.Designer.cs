@@ -37,7 +37,7 @@ namespace MissionEditor.Metro.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\ProjectResource\\imagesets\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\ProjectResource\\00UI\\")]
         public string ImageFolderPath {
             get {
                 return ((string)(this["ImageFolderPath"]));
@@ -97,13 +97,25 @@ namespace MissionEditor.Metro.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("roleandmonster")]
+        [global::System.Configuration.DefaultSettingValueAttribute("大头像")]
         public string HeadImageset {
             get {
                 return ((string)(this["HeadImageset"]));
             }
             set {
                 this["HeadImageset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Item")]
+        public string ItemIcon {
+            get {
+                return ((string)(this["ItemIcon"]));
+            }
+            set {
+                this["ItemIcon"] = value;
             }
         }
     }

@@ -6,7 +6,7 @@
       <Value Profile="(Default)">D:\ProjectResource\autoconfig\</Value>
     </Setting>
     <Setting Name="ImageFolderPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\ProjectResource\imagesets\</Value>
+      <Value Profile="(Default)">D:\ProjectResource\00UI\</Value>
     </Setting>
     <Setting Name="ItemAttrName" Type="System.String" Scope="User">
       <Value Profile="(Default)">knight.gsp.item.citemattr.xml</Value>
@@ -21,7 +21,10 @@
       <Value Profile="(Default)">knight.gsp.map.cmapconfig.xml</Value>
     </Setting>
     <Setting Name="HeadImageset" Type="System.String" Scope="User">
-      <Value Profile="(Default)">roleandmonster</Value>
+      <Value Profile="(Default)">大头像</Value>
+    </Setting>
+    <Setting Name="ItemIcon" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Item</Value>
     </Setting>
   </Settings>
 </SettingsFile>

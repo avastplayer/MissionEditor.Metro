@@ -61,7 +61,7 @@ namespace MissionEditor.Metro
             BindingTextBoxValue(ProcessBarColorTextBox, "[ProcessBarColor]");
 
             BindingListBoxValue(DisPlayNPCIDListBox, "DisPlayNPCID");
-            
+
             SetAwardItemCell();
             MissionTypeComboBox.SelectedIndex = DataProcess.GetMissionTypeSelectIndex(
                 Convert.ToInt32(AssetManager.MissionDatatable.Rows[SelectDataRow]["MissionType"]));
@@ -201,9 +201,9 @@ namespace MissionEditor.Metro
                 {
                     string itemNum = AssetManager.MissionDatatable.Rows[SelectDataRow]["RewardItemNumList" + i].ToString();
                     string itemIsBind = AssetManager.MissionDatatable.Rows[SelectDataRow]["RewardItemIsBindList" + i].ToString();
-                    AssetManager.GetItemInfo(itemId,out string itemName,out int itemIcon);
+                    AssetManager.GetItemInfo(itemId, out string itemName, out int itemIcon);
                     BitmapSource itemIconSource =
-                        AssetManager.GetImage("ItemIcon" + (itemIcon - 1000) / 16, itemIcon.ToString());
+                        AssetManager.GetImage(AssetManager.ItemIcon, itemIcon.ToString());
                     RewardItemListbox.Items.Add(new AwardItemCell(itemId.ToString(), itemNum, itemName, itemIconSource, itemIsBind, RewardItemListbox.ActualWidth - 5));
                 }
             }

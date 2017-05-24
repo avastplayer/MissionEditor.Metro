@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
@@ -18,15 +20,20 @@ namespace MissionEditor.Metro
     public class AssetManager
     {
         public string ConfigFolderPath { get; set; } = Settings.Default.ConfigFolderPath;//D:\ProjectResource\autoconfig\
-        public string ImageFolderPath { get; set; } = Settings.Default.ImageFolderPath; //D:\ProjectResource\imagesets\
+        public string ImageFolderPath { get; set; } = Settings.Default.ImageFolderPath; //D:\ProjectResource\00UI\
         public string ItemAttrFileName { get; set; } = Settings.Default.ItemAttrName;//knight.gsp.item.citemattr.xml
         public string NpcConfigFileName { get; set; } = Settings.Default.NpcConfigFileName;//knight.gsp.npc.cnpcconfig.xml
         public string NpcShapeFileName { get; set; } = Settings.Default.NpcShapeFileName;//knight.gsp.npc.cnpcshape.xml
         public string MapConfigFileName { get; set; } = Settings.Default.MapConfigFileName;//knight.gsp.map.cmapconfig.xml
-        public string HeadImageset { get; set; } = Settings.Default.HeadImageset;//roleandmonster
+        public string HeadImageset { get; set; } = Settings.Default.HeadImageset;//大头像
+        public string ItemIcon { get; set; } = Settings.Default.ItemIcon;//Item
 
         public string MissionFilePath { get; set; } = @"D:\ProjectResource\z主线任务.xlsx";
         public static DataTable MissionDatatable { get; private set; }
+        public XElement ItemAttrNode { get; set; }
+        public XElement NpcConfigNode { get; set; }
+        public XElement NpcShapeNode { get; set; }
+        public XElement MapConfigNode { get; set; }
 
         public AssetManager()
         {
@@ -58,6 +65,11 @@ namespace MissionEditor.Metro
             {
                 MessageBox.Show("请关闭excel进程，重新打开！");
             }
+
+            ItemAttrNode = XElement.Load(ConfigFolderPath + ItemAttrFileName);
+            NpcConfigNode = XElement.Load(ConfigFolderPath + NpcConfigFileName);
+            NpcShapeNode = XElement.Load(ConfigFolderPath + NpcShapeFileName);
+            MapConfigNode = XElement.Load(ConfigFolderPath + MapConfigFileName);
         }
 
         private bool CheckSetting()
@@ -95,122 +107,57 @@ namespace MissionEditor.Metro
             return true;
         }
 
-        /// <summary>
-        ///按照路径在imageset中查找图片坐标，在tga文件中裁切图片
-        /// 例：set:roleandmonster0 image:9000
-        /// </summary>
-        /// <param name="imagesetName">例：roleandmonster0</param>
-        /// <param name="imageName">例：9000</param>
-        /// <returns>可绑定图片资源</returns>
-        public BitmapSource GetImage(string imagesetName, string imageName)
+        public BitmapSource GetImage(string fileName, string imageName)
         {
             //图片完整路径
-            string imageFullPath = ImageFolderPath + imagesetName + ".tga";
+            string imageFullPath = ImageFolderPath + fileName + "\\" + imageName + ".tga";
 
-            //在imageset中查找图片坐标和尺寸
-            Rectangle rect = GetRectangle(imagesetName, imageName);
-            if (rect.Height == 0 || rect.Width == 0)
-            {
-                MessageBox.Show($"{imagesetName}.imageset中找不到对应{imageName}！");
-                return null;
-            }
+            var tga = new TgaLib.TgaImage(new BinaryReader(
+                new FileStream(imageFullPath, FileMode.Open, FileAccess.Read, FileShare.Read)));
 
-            //按照坐标和尺寸裁切
-            Bitmap image = CutImage(Paloma.TargaImage.LoadTargaImage(imageFullPath), rect);
-
-            BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(image.GetHbitmap(),
-                IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            return bitmapSource;
+            return tga.GetBitmap();
         }
 
-        private static Bitmap CutImage(Image img, Rectangle rect)
-        {
-            Bitmap b = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(b);
-            g.DrawImage(img, 0, 0, rect, GraphicsUnit.Pixel);
-            g.Dispose();
-            return b;
-        }
-
-        /// <summary>
-        /// 根据npcid查找knight.gsp.npc.cnpcconfig.xml中的name、modelID、mapid字段
-        /// </summary>
-        /// <param name="npcId"></param>
-        /// <param name="npcName"></param>
-        /// <param name="headBitmapSource"></param>
-        /// <param name="mapName"></param>
         public void GetNpcInfo(int npcId, out string npcName, out BitmapSource headBitmapSource)
         {
             //主角特殊处理
             if (npcId == 1)
             {
                 npcName = "主角";
-                headBitmapSource = GetImage(HeadImageset + 0, "9000");
+                headBitmapSource = GetImage(HeadImageset, "9000");
                 return;
             }
 
-            string npcConfigPath = ConfigFolderPath + NpcConfigFileName;
+            var npcInfo = (from target in NpcConfigNode.Descendants("record")
+                           where target.Attribute("id").Value == npcId.ToString()
+                           select new
+                           {
+                               name = target.Attribute("name").Value,
+                               modelID = target.Attribute("modelID").Value,
+                           }).FirstOrDefault();
 
-            XElement rootNode = XElement.Load(npcConfigPath);
-
-            IEnumerable<XElement> targetNodes = from target in rootNode.Descendants("record")
-                                                select target;
-            foreach (XElement node in targetNodes)
-            {
-                if (node.Attribute("id").Value != npcId.ToString()) continue;
-
-                if (node.Attribute("name") == null || node.Attribute("modelID") == null) continue;
-
-                if (int.TryParse(node.Attribute("modelID").Value, out int shapeId))
-                {
-                    npcName = node.Attribute("name").Value;
-                    int headId = GetHeadId(shapeId);
-                    string imagesetName = HeadImageset + (headId - 9000) / 4;
-                    headBitmapSource = GetImage(imagesetName, headId.ToString());
-                    return;
-                }
-            }
-            npcName = null;
-            headBitmapSource = null;
+            npcName = npcInfo.name;
+            int headId = GetHeadId(Convert.ToInt32(npcInfo.modelID));
+            headBitmapSource = GetImage(HeadImageset, headId.ToString());
         }
 
         public void GetNpcInfo(int npcId, out string npcName, out BitmapSource headBitmapSource, out string mapName)
         {
-            string npcConfigPath = ConfigFolderPath + NpcConfigFileName;
+            var npcInfo = (from target in NpcConfigNode.Descendants("record")
+                           where target.Attribute("id").Value == npcId.ToString()
+                           select new
+                           {
+                               name = target.Attribute("name").Value,
+                               modelID = target.Attribute("modelID").Value,
+                               mapid = target.Attribute("mapid").Value
+                           }).FirstOrDefault();
 
-            XElement rootNode = XElement.Load(npcConfigPath);
-
-            IEnumerable<XElement> targetNodes = from target in rootNode.Descendants("record")
-                                                select target;
-            foreach (XElement node in targetNodes)
-            {
-                if (node.Attribute("id").Value != npcId.ToString()) continue;
-
-                if (node.Attribute("name") == null || node.Attribute("modelID") == null || node.Attribute("mapid") == null) continue;
-
-                if (int.TryParse(node.Attribute("modelID").Value, out int shapeId) &&
-                    int.TryParse(node.Attribute("mapid").Value, out int mapId))
-                {
-                    npcName = node.Attribute("name").Value;
-                    int headId = GetHeadId(shapeId);
-                    string imagesetName = HeadImageset + (headId - 9000) / 4;
-                    headBitmapSource = GetImage(imagesetName, headId.ToString());
-                    mapName = GetMapName(mapId);
-                    return;
-                }
-            }
-            npcName = null;
-            headBitmapSource = null;
-            mapName = null;
+            npcName = npcInfo.name;
+            int headId = GetHeadId(Convert.ToInt32(npcInfo.modelID));
+            headBitmapSource = GetImage(HeadImageset, headId.ToString());
+            mapName = GetMapName(Convert.ToInt32(npcInfo.mapid));
         }
 
-        /// <summary>
-        ///查找imageset中的XPos、YPos、Width、Height字段
-        /// 例：set:roleandmonster0 image:9000
-        /// </summary>
-        /// <param name="imagesetName">例：roleandmonster0</param>
-        /// <param name="imageName">例：9000</param>
-        /// <returns>矩形(xPos, yPos, width, height)</returns>
         private Rectangle GetRectangle(string imagesetName, string imageName)
         {
             string imagesetPath = ImageFolderPath + imagesetName + ".imageset";
@@ -237,85 +184,31 @@ namespace MissionEditor.Metro
             return new Rectangle();
         }
 
-        /// <summary>
-        ///查找knight.gsp.map.cmapconfig.xml中的mapName字段
-        /// </summary>
-        /// <param name="mapId"></param>
-        /// <returns>mapName</returns>
         private string GetMapName(int mapId)
         {
-            string mapConfigPath = ConfigFolderPath + MapConfigFileName;
-
-            XElement rootNode = XElement.Load(mapConfigPath);
-
-            IEnumerable<XElement> targetNodes = from target in rootNode.Descendants("record")
-                                                select target;
-            foreach (XElement node in targetNodes)
-            {
-                if (node.Attribute("id").Value != mapId.ToString()) continue;
-
-                if (node.Attribute("mapName") == null) continue;
-                return node.Attribute("mapName").ToString();
-            }
-            return null;
+            return (from target in MapConfigNode.Descendants("record")
+                    where target.Attribute("id").Value == mapId.ToString()
+                    select target.Attribute("mapName").Value).FirstOrDefault();
         }
 
-        /// <summary>
-        ///查找knight.gsp.item.CItemAttr.xml中的name,icon字段
-        /// </summary>
-        /// <param name="itemId"></param>
-        /// <returns>itemName</returns>
-        /// <returns>itemIcon</returns>
-        public void GetItemInfo(int itemId,out string itemName,out int itemIcon)
+        public void GetItemInfo(int itemId, out string itemName, out int itemIcon)
         {
-            string itemConfigPath = ConfigFolderPath + ItemAttrFileName;
-
-            XElement rootNode = XElement.Load(itemConfigPath);
-
-            IEnumerable<XElement> targetNodes = from target in rootNode.Descendants("record")
-                select target;
-            foreach (XElement node in targetNodes)
-            {
-                if (node.Attribute("id").Value != itemId.ToString()) continue;
-
-                if (node.Attribute("name") == null|| node.Attribute("icon") == null) continue;
-
-                if (!int.TryParse(node.Attribute("icon").Value, out int icon)) continue;
-                itemName = node.Attribute("name").Value;
-                itemIcon = icon;
-                return;
-            }
-            itemName = null;
-            itemIcon = 0;
+            var itemInfo = (from target in ItemAttrNode.Descendants("record")
+                            where target.Attribute("id").Value == itemId.ToString()
+                            select new
+                            {
+                                name = target.Attribute("name").Value,
+                                icon = target.Attribute("icon").Value
+                            }).FirstOrDefault();
+            itemName = itemInfo.name;
+            itemIcon = Convert.ToInt32(itemInfo.icon);
         }
 
-
-
-        /// <summary>
-        /// 查找knight.gsp.npc.cnpcshape.xml中的headID字段
-        /// </summary>
-        /// <param name="shapeId"></param>
-        /// <returns></returns>
         private int GetHeadId(int shapeId)
         {
-            string npcShapePath = ConfigFolderPath + NpcShapeFileName;
-
-            XElement rootNode = XElement.Load(npcShapePath);
-
-            IEnumerable<XElement> targetNodes = from target in rootNode.Descendants("record")
-                                                select target;
-            foreach (XElement node in targetNodes)
-            {
-                if (node.Attribute("id").Value != shapeId.ToString()) continue;
-
-                if (node.Attribute("headID") == null) continue;
-
-                if (int.TryParse(node.Attribute("headID").Value, out int headID))
-                {
-                    return headID;
-                }
-            }
-            return 0;
+            return (from target in NpcShapeNode.Descendants("record")
+                    where target.Attribute("id").Value == shapeId.ToString()
+                    select Convert.ToInt32(target.Attribute("headID").Value)).FirstOrDefault();
         }
     }
 }
