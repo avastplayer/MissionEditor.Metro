@@ -308,6 +308,7 @@
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="7" Grid.Column="0" Text="宠物经验" />
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="7" Grid.Column="2" Text="储备金奖励" />
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="8" Grid.Column="0" Text="历练声望" />
+                <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="4" Text="  物品ID                 数量                名称                     造型    绑定" />
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="13" Grid.Column="0" Text="跳转方式" />
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="13" Grid.Column="2" Text="进度条时间" />
                 <TextBlock Margin="3" VerticalAlignment="Center"  Grid.Row="14" Grid.Column="0" Text="地图" />
@@ -324,17 +325,9 @@
                 <TextBox Margin="3"  Grid.Row="7" Grid.Column="1" Name="PetExpRewardTextBox" />
                 <TextBox Margin="3"  Grid.Row="7" Grid.Column="3" Name="SMoneyTextBox" />
                 <TextBox Margin="3"  Grid.Row="8" Grid.Column="1" Name="ShengWangTextBox" />
-                <DataGrid  Grid.Row="9"  Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="4" MinHeight="100" Name="RewardItemDataGrid"  AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserSortColumns="False" SelectionMode="Single">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn CanUserResize="False" Width="1.5*" Binding="{Binding Path=RewardItemIDList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="奖励道具ID" />
-                        <DataGridTextColumn CanUserResize="False" Width="2*" Binding="{Binding Path=RewardItemNumList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="奖励道具Num" />
-                        <DataGridTextColumn CanUserResize="False" Width="*" Binding="{Binding Path=RewardItemShapeIDList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="造型" />
-                        <DataGridTextColumn CanUserResize="False" Width="*" Binding="{Binding Path=RewardItemIsBindList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="绑定" />
-                    </DataGrid.Columns>
-                </DataGrid>
-                <ListBox Margin="3"  Grid.Row="10" Grid.Column="1" Name="RewardItemNumList" />
-                <ListBox Margin="3"  Grid.Row="11" Grid.Column="1" Name="RewardItemShapeIDList" />
-                <ListBox Margin="3"  Grid.Row="12" Grid.Column="1" Name="RewardItemIsBindList" />
+                
+                <ListBox  Grid.Row="10"  Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="4" MinHeight="100" Name="RewardItemListbox">
+                </ListBox>
                 <ComboBox Margin="3"  Grid.Row="13" Grid.Column="1" Name="RewardMapJumpTypeComboBox" DropDownClosed="RewardMapJumpTypeComboBox_OnDropDownClosed">
                     <ComboBoxItem Content="无" />
                     <ComboBoxItem Content="传送" />

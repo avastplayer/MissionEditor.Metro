@@ -104,13 +104,6 @@ namespace MissionEditor.Metro
         /// <returns>可绑定图片资源</returns>
         public BitmapSource GetImage(string imagesetName, string imageName)
         {
-            //获取全部image名字
-            IEnumerable<string> imageNameList = GetFileNameList(ImageFolderPath);
-            //Todo:待优化
-            //查找图片
-            int findImageNumer = imageNameList.Count(element => element.Contains(imagesetName));
-            if (findImageNumer == 0) return null;
-
             //图片完整路径
             string imageFullPath = ImageFolderPath + imagesetName + ".tga";
 
@@ -268,6 +261,37 @@ namespace MissionEditor.Metro
         }
 
         /// <summary>
+        ///查找knight.gsp.item.CItemAttr.xml中的name,icon字段
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns>itemName</returns>
+        /// <returns>itemIcon</returns>
+        public void GetItemInfo(int itemId,out string itemName,out int itemIcon)
+        {
+            string itemConfigPath = ConfigFolderPath + ItemAttrFileName;
+
+            XElement rootNode = XElement.Load(itemConfigPath);
+
+            IEnumerable<XElement> targetNodes = from target in rootNode.Descendants("record")
+                select target;
+            foreach (XElement node in targetNodes)
+            {
+                if (node.Attribute("id").Value != itemId.ToString()) continue;
+
+                if (node.Attribute("name") == null|| node.Attribute("icon") == null) continue;
+
+                if (!int.TryParse(node.Attribute("icon").Value, out int icon)) continue;
+                itemName = node.Attribute("name").Value;
+                itemIcon = icon;
+                return;
+            }
+            itemName = null;
+            itemIcon = 0;
+        }
+
+
+
+        /// <summary>
         /// 查找knight.gsp.npc.cnpcshape.xml中的headID字段
         /// </summary>
         /// <param name="shapeId"></param>
@@ -292,12 +316,6 @@ namespace MissionEditor.Metro
                 }
             }
             return 0;
-        }
-
-        private static IEnumerable<string> GetFileNameList(string path)
-        {
-            string[] files = Directory.GetFiles(path);
-            return files.Select(Path.GetFileName).ToList();
         }
     }
 }

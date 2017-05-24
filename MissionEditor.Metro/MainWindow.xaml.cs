@@ -61,12 +61,8 @@ namespace MissionEditor.Metro
             BindingTextBoxValue(ProcessBarColorTextBox, "[ProcessBarColor]");
 
             BindingListBoxValue(DisPlayNPCIDListBox, "DisPlayNPCID");
-
-            //TODO：DisPlayNPCID
-            //TODO：RewardItemIDList
-            //TODO：RewardItemNumList
-            //TODO：RewardItemShapeIDList
-            //TODO：RewardItemIsBindList
+            
+            SetAwardItemCell();
             MissionTypeComboBox.SelectedIndex = DataProcess.GetMissionTypeSelectIndex(
                 Convert.ToInt32(AssetManager.MissionDatatable.Rows[SelectDataRow]["MissionType"]));
 
@@ -177,7 +173,7 @@ namespace MissionEditor.Metro
                 {
                     string conversation = AssetManager.MissionDatatable.Rows[SelectDataRow]["ScenarioInfoNpcConversationList" + i].ToString();
                     AssetManager.GetNpcInfo(npcId, out string npcName, out BitmapSource headBitmapSource);
-                    ScenarioInfoNpcConversationListBox.Items.Add(new ConversationCell(npcName, headBitmapSource, conversation, ScenarioInfoNpcConversationListBox.ActualWidth - 2));
+                    ScenarioInfoNpcConversationListBox.Items.Add(new ConversationCell(npcName, headBitmapSource, conversation, ScenarioInfoNpcConversationListBox.ActualWidth - 5));
                 }
             }
         }
@@ -191,7 +187,24 @@ namespace MissionEditor.Metro
                 {
                     string conversation = AssetManager.MissionDatatable.Rows[SelectDataRow]["ScenarioInfoFinishConversationList" + i].ToString();
                     AssetManager.GetNpcInfo(npcId, out string npcName, out BitmapSource headBitmapSource);
-                    ScenarioInfoFinishConversationListBox.Items.Add(new ConversationCell(npcName, headBitmapSource, conversation, ScenarioInfoFinishConversationListBox.ActualWidth));
+                    ScenarioInfoFinishConversationListBox.Items.Add(new ConversationCell(npcName, headBitmapSource, conversation, ScenarioInfoFinishConversationListBox.ActualWidth - 5));
+                }
+            }
+        }
+
+        private void SetAwardItemCell()
+        {
+            RewardItemListbox.Items.Clear();
+            for (int i = 0; i < 50; i++)
+            {
+                if (int.TryParse(AssetManager.MissionDatatable.Rows[SelectDataRow]["RewardItemIDList" + i].ToString(), out int itemId))
+                {
+                    string itemNum = AssetManager.MissionDatatable.Rows[SelectDataRow]["RewardItemNumList" + i].ToString();
+                    string itemIsBind = AssetManager.MissionDatatable.Rows[SelectDataRow]["RewardItemIsBindList" + i].ToString();
+                    AssetManager.GetItemInfo(itemId,out string itemName,out int itemIcon);
+                    BitmapSource itemIconSource =
+                        AssetManager.GetImage("ItemIcon" + (itemIcon - 1000) / 16, itemIcon.ToString());
+                    RewardItemListbox.Items.Add(new AwardItemCell(itemId.ToString(), itemNum, itemName, itemIconSource, itemIsBind, RewardItemListbox.ActualWidth - 5));
                 }
             }
         }

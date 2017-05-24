@@ -82,6 +82,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="AwardItemCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ConversationCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -95,6 +99,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AssetManager.cs" />
+    <Compile Include="AwardItemCell.xaml.cs">
+      <DependentUpon>AwardItemCell.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ConversationCell.xaml.cs">
       <DependentUpon>ConversationCell.xaml</DependentUpon>
     </Compile>
